@@ -9,7 +9,7 @@ import { title } from 'process';
 
 @Injectable({'scope':Scope.TRANSIENT}) // Singleton, Scope.REQUEST => CREATED in starting of each http request and shared acrossed the app, Scope.TRANSIENT => every controller has an new instance; 
 export class TasksService {
-    constructor(@InjectRepository(TaskRepository) private readonly taskRepository:TaskRepository){
+    constructor(private readonly taskRepository:TaskRepository){
 
     }
     // private tasks: Task[] = [];
