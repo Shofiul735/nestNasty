@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TasksModule } from './tasks/tasks.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
+import { Task } from './tasks/dbModels/task.entity';
 
 @Module({
   imports: [
