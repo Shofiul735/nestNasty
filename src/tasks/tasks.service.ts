@@ -1,4 +1,4 @@
-import { Injectable,NotFoundException,Scope } from '@nestjs/common';
+import { BadRequestException, Injectable,NotFoundException,Scope } from '@nestjs/common';
 import {  TaskStatus } from './task.model';
 import { CreateTaskDto } from './dtos/task.dto';
 import { TaskRepository } from './repositories/task.repository';
@@ -19,20 +19,14 @@ export class TasksService {
     //     return this.tasks;
     // }
 
-    // createTask(createTaskDto: CreateTaskDto): Task{
-    //     this.id++;
-
-    //     const {title, description} = createTaskDto;
-
-    //     const task: Task = {
-    //         id: this.id.toString(),
-    //         title: title,
-    //         description: description,
-    //         status: TaskStatus.OPEN
-    //     }
-    //     this.tasks.push(task);
-    //     return task;
-    // }
+    async createTask(createTaskDto: CreateTaskDto): Promise<Task>{
+        try{
+            return await this.taskRepository.createTask(createTaskDto);
+        }catch(ex){
+            throw new BadRequestException(`Task can't be created`);
+        }
+        
+    }
 
     // getById(id: string): Task{
     //     return this.tasks.find((i) => i.id === id);
@@ -51,11 +45,22 @@ export class TasksService {
         return found;
     }
 
-    // deleteById(id: string): Task{
-    //     const task =  this.getById(id);
-    //     this.tasks =  this.tasks.filter(i => i.id !== id);
-    //     return task;
-    // }
+    async deleteById(id: string): Promise<void>{
+        // using entity
+        // try{
+        //     const task = await this.getTaskBtId(id);
+        //     await this.taskRepository.remove(task);
+        //     return task;
+        // }catch(ex){
+        //     throw ex;
+        // }
+        
+        // using id
+        const result = await this.taskRepository.delete(id);
+        if(result.affected === 0){
+            throw new NotFoundException(`Task is not found for the id: ${id}`); 
+        }
+    }
 
     // updateStatusById(id: string, taskStatus:TaskStatus): Task{
     //     const task = this.getById(id);

@@ -23,10 +23,15 @@ export class TasksController {
         return this.tasksService.getTaskBtId(id);
     }
 
-    // @Delete('/:id')
-    // deleteById(@Param('id') id:string): Task{
-    //     return this.tasksService.deleteById(id);
-    // }
+    @Post()
+    createTask(@Body() createTaskDto:CreateTaskDto): Promise<Task>{
+        return this.tasksService.createTask(createTaskDto);
+    }
+
+    @Delete('/:id')
+    deleteById(@Param('id') id:string): Promise<void>{
+        return this.tasksService.deleteById(id);
+    }
 
     // @Patch('/:id/status')
     // updateById(@Param('id') id:string, @Body('status') status:TaskStatus): Task{
