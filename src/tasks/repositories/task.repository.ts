@@ -1,5 +1,5 @@
 import { DataSource, Repository } from "typeorm";
-import { Task } from "../dbModels/task.entity";
+import { Task } from "../entities/task.entity";
 import { Injectable, Scope } from "@nestjs/common";
 import { CreateTaskDto } from "../dtos/task.dto";
 import { TaskStatus } from "../task.model";

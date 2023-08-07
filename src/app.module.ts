@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { TasksModule } from './tasks/tasks.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { Task } from './tasks/dbModels/task.entity';
+import { Task } from './tasks/entities/task.entity';
 import { AuthModule } from './auth/auth.module';
 
 @Module({

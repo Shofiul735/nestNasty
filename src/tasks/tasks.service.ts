@@ -2,7 +2,7 @@ import { BadRequestException, Injectable,NotFoundException,Scope } from '@nestjs
 import {  TaskStatus } from './task.model';
 import { CreateTaskDto } from './dtos/task.dto';
 import { TaskRepository } from './repositories/task.repository';
-import { Task } from './dbModels/task.entity';
+import { Task } from './entities/task.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { title } from 'process';
 
