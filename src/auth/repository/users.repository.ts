@@ -1,7 +1,9 @@
 import { DataSource, Repository } from "typeorm";
 import { User } from "../entities/user.entity";
-import { Injectable, Scope } from "@nestjs/common";
+import { BadRequestException, Injectable, Scope } from "@nestjs/common";
 import { UserCredentialsDto } from "../dtos/user-credentials.dto";
+import * as bcrypt from 'bcrypt';
+
 
 @Injectable({scope:Scope.REQUEST})
 export class UserRepository extends Repository<User>{
@@ -11,8 +13,17 @@ export class UserRepository extends Repository<User>{
 
     async createUser(userCredentialsDto: UserCredentialsDto):Promise<User>{
         const {userName,password} = userCredentialsDto;
-        const user = {userName,password};
-        const savedUser = await this.save(user);
-        return savedUser;
+
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(password,salt);
+
+        const user = {userName,password:hashedPassword};
+        try{
+            const savedUser = await this.save(user);
+            return savedUser;
+        }catch(ex){
+            console.log(ex);
+            throw new BadRequestException(ex.detail);
+        }
     }
 }
