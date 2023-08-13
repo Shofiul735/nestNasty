@@ -12,4 +12,9 @@ export class AuthController {
     singUp(@Body() userCredentialsDto:UserCredentialsDto):Promise<boolean>{
         return this.authService.createUser(userCredentialsDto);
     }
+
+    @Post('/signin')
+    signin(@Body() userCredentialsDto:UserCredentialsDto): Promise<string>{
+        return this.authService.signinUser(userCredentialsDto);
+    }
 }
