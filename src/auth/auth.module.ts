@@ -8,29 +8,26 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConstant } from './constants/jwt.constant';
 import { PassportConstant } from './constants/passport.constant';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports:[
     TypeOrmModule.forFeature([User]),
-    PassportModule.registerAsync({
-      useFactory: async _ => {
-        return {
-          defaultStrategy: PassportConstant.strategy,
-        }
-      }
+    PassportModule.register({
+      defaultStrategy: PassportConstant.strategy,
     }),
-    JwtModule.registerAsync({
-      useFactory: async _ => {
-        return {
-          secret: JwtConstant.secret,
-          signOptions:{
-            expiresIn: JwtConstant.expireTime,
-          }
-        }
+    JwtModule.register({
+      secret: JwtConstant.secret,
+      signOptions:{
+        expiresIn: JwtConstant.expireTime,
       }
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService,UserRepository]
+  providers: [AuthService,UserRepository,JwtStrategy],
+  exports: [
+    PassportModule,
+    JwtStrategy
+  ]
 })
 export class AuthModule {}
