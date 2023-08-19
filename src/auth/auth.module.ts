@@ -8,14 +8,13 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConstant } from './constants/jwt.constant';
 import { PassportConstant } from './constants/passport.constant';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './auth.guard';
 
 
 @Module({
   imports:[
     TypeOrmModule.forFeature([User]),
-    PassportModule.register({
-      defaultStrategy: PassportConstant.strategy,
-    }),
     JwtModule.register({
       secret: JwtConstant.secret,
       signOptions:{
@@ -24,7 +23,10 @@ import { PassportConstant } from './constants/passport.constant';
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService,UserRepository],
+  providers: [AuthService,UserRepository,{
+    provide: APP_GUARD, // Make the Authentication globally available using AuthGaurd from src/auth/auth.guard.ts
+    useClass: AuthGuard
+  }],
   exports: []
 })
 export class AuthModule {}

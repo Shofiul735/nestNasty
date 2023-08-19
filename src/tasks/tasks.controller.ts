@@ -3,12 +3,14 @@ import { TaskStatus } from './task.model';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dtos/task.dto';
 import { Task } from './entities/task.entity';
+import { Public } from 'src/auth/public.decorator';
 
 @Controller('tasks')
 export class TasksController {
     constructor(private readonly tasksService:TasksService){}
 
     @Get()
+    @Public()
     getAllTasks(): Promise<Task[]> {
         return this.tasksService.getAllTasks();
     }
